@@ -84,7 +84,7 @@ two_bit_quantized_module = create_quantized_copy_of_model(
 
 input_val = input("enter 1,2,3")
 if int(input_val) == 1:
-    normal_logger = WandbLogger(project="BitNet", name="normal_mnist")
+    normal_logger = WandbLogger(project="BitNet_v2", name="normal_mnist")
     normal_trainer = L.Trainer(
         max_epochs=10,
         logger=normal_logger,
@@ -93,7 +93,7 @@ if int(input_val) == 1:
     normal_logger.finalize(status="success")
 
 if int(input_val) == 2:
-    one_bit_logger = WandbLogger(project="BitNet", name="one_bit_mnist")
+    one_bit_logger = WandbLogger(project="BitNet_v2", name="one_bit_mnist")
     one_bit_logger.experiment.name = "one_bit_mnist"
     one_bit_quantized_module.lr = 1e-4
     one_bit_quant_trainer = L.Trainer(
@@ -104,7 +104,7 @@ if int(input_val) == 2:
     one_bit_logger.finalize(status="success")
 
 if int(input_val) == 3:
-    two_bit_logger = WandbLogger(project="BitNet", name="two_bit_mnist_lr=1e-4")
+    two_bit_logger = WandbLogger(project="BitNet_v2", name="two_bit_mnist_lr=1e-4")
     two_bit_logger.experiment.name = "two_bit_mnist_lr=1e-4"
     two_bit_quant_trainer = L.Trainer(
         max_epochs=10,

@@ -105,7 +105,7 @@ from lightning.pytorch.loggers import WandbLogger
 
 choice = input("Enter 1,2,3:")
 if int(choice) == 1:
-    normal_logger = WandbLogger(project="BitNet", name="normal_cifar100")
+    normal_logger = WandbLogger(project="BitNet_v2", name="normal_cifar100")
     normal_trainer = L.Trainer(
         max_epochs=10,
         logger=normal_logger,
@@ -116,7 +116,7 @@ if int(choice) == 1:
         val_dataloaders=eval_dataloader,
     )
 if int(choice) == 2:
-    one_bit_logger = WandbLogger(project="BitNet", name="one_bit_cifar100")
+    one_bit_logger = WandbLogger(project="BitNet_v2", name="one_bit_cifar100")
     one_bit_trainer = L.Trainer(
         max_epochs=10,
         logger=one_bit_logger,
@@ -129,7 +129,7 @@ if int(choice) == 2:
     )
 
 if int(choice) == 3:
-    two_bit_logger = WandbLogger(project="BitNet", name="two_bit_cifar100")
+    two_bit_logger = WandbLogger(project="BitNet_v2", name="two_bit_cifar100")
     two_bit_trainer = L.Trainer(
         max_epochs=10,
         logger=two_bit_logger,

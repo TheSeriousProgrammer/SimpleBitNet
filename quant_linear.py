@@ -69,18 +69,31 @@ class BitNetLinearLayer(nn.Module):
     def forward(self, x):
         weight_adjustment_factor = self.compute_adjustment_factor(self.weight)
         adjusted_weight = self.weight / weight_adjustment_factor
+        input_adjustment_factor = 127.0
+        adjusted_input = x / input_adjustment_factor
+
+        quantized_weight = self.compute_quantized_tensor(adjusted_weight)
+        quantized_input = torch.clip(torch.round(adjusted_input), min=-1, max=1)
 
         if self.training:
             quantized_weight = (
-                adjusted_weight
-                + (
-                    self.compute_quantized_tensor(adjusted_weight) - adjusted_weight
-                ).detach()
+                adjusted_weight + (quantized_weight - adjusted_weight).detach()
             )
-        else:
-            quantized_weight = self.compute_quantized_tensor(adjusted_weight)
 
-        return F.linear(weight_adjustment_factor * x, quantized_weight, self.bias)
+            quantized_input = (
+                adjusted_input + (quantized_input - adjusted_input).detach()
+            )
+
+        output = (
+            weight_adjustment_factor
+            * input_adjustment_factor
+            * adjusted_input
+            @ adjusted_weight.t()
+        )
+
+        if self.bias is not None:
+            output += self.bias
+        return output
 
 
 import copy
